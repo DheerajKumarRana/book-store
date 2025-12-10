@@ -1,0 +1,285 @@
+.heroWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #f8f9fa;
+    margin-bottom: 8rem;
+}
+
+@media (max-width: 768px) {
+    .heroWrapper {
+        margin-bottom: 4rem;
+    }
+}
+
+.sliderContainer {
+    position: relative;
+    height: 500px;
+    /* Adjust based on design */
+    width: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slideOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.slideContent {
+    flex: 1;
+    max-width: 600px;
+    z-index: 2;
+    color: white;
+}
+
+.title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #f1f5f9;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.shopBtn {
+    display: inline-block;
+    background-color: #ef4444;
+    /* Red color */
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.shopBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+}
+
+.controls {
+    position: absolute;
+    bottom: 48px;
+    /* Position above the bottom bar */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.controlBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #ef4444;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+}
+
+.controlBtn:hover {
+    background: #dc2626;
+}
+
+/* Bottom Bar Styles */
+.bottomBar {
+    /* position: absolute; */
+    bottom: 0;
+    right: 0;
+    /* width: 80%; */
+    /* Adjust width as needed */
+    height: 120px;
+    background: white;
+    display: flex;
+    z-index: 20;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.searchArea {
+    flex: 1;
+    display: flex;
+}
+
+.searchContent {
+    flex: 1;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.searchBtn {
+    width: 150px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1.2;
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
+
+.searchBtn:hover {
+    background: #dc2626;
+}
+
+.featuredArea {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    gap: 2rem;
+    background: white;
+    max-width: 30rem;
+}
+
+.bookInfo {
+    flex: 1;
+}
+
+.bookTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.2rem;
+}
+
+.bookAuthor {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.bookPrice {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
+
+.dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.activeDot {
+    background: #ef4444;
+}
+
+.bookImageWrapper {
+    width: 80px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.bookImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .bottomBar {
+        width: 100%;
+        position: relative;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .searchArea,
+    .featuredArea {
+        width: 100%;
+        padding: 1.5rem;
+        max-width: none;
+    }
+
+    .searchBtn {
+        width: 120px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sliderContainer {
+        height: 400px;
+    }
+
+    .slide {
+        padding: 0 1.5rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .controls {
+        bottom: 20px;
+    }
+}

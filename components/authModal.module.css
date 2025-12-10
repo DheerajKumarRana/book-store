@@ -1,0 +1,290 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+.modal {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.9);
+    opacity: 0;
+    animation: popIn 0.3s 0.1s forwards;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #64748b;
+    cursor: pointer;
+    z-index: 10;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: #f1f5f9;
+}
+
+.contentContainer {
+    position: relative;
+    min-height: 600px;
+    padding: 2rem;
+    /* Ensure enough height for transitions */
+}
+
+/* Views wrapper for sliding */
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s;
+    background: white;
+}
+
+/* Specific view states */
+.view.login {
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.view.register {
+    transform: translateX(100%);
+    z-index: 1;
+}
+
+.view.verify {
+    transform: translateX(100%);
+    z-index: 3;
+    /* Verify sits on top or handled via state classes */
+}
+
+/* Active states for transitions */
+/* We will toggle classes on parent or use different logic for 3 views 
+   Let's keep it simple: 
+   If view === 'login': login(0), register(100%), verify(100%)
+   If view === 'register': login(-100%), register(0), verify(100%)
+   If view === 'verify': login(-100%), register(-100%), verify(0)
+*/
+
+.logo {
+    width: 120px;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputGroup {
+    position: relative;
+}
+
+.input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.otpInput {
+    text-align: center;
+    letter-spacing: 8px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.submitBtn {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.2s;
+}
+
+.submitBtn:hover {
+    background: #334155;
+    transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.error {
+    color: #ef4444;
+    font-size: 0.85rem;
+    background: #fef2f2;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.footer {
+    margin-top: auto;
+    font-size: 0.9rem;
+    color: #64748b;
+    padding-top: 1.5rem;
+}
+
+.link {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animations for 3-pane slider */
+.activeView {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.inactiveLeft {
+    transform: translateX(-100%) !important;
+    opacity: 0;
+}
+
+.inactiveRight {
+    transform: translateX(100%) !important;
+    opacity: 0;
+}
+
+.googleBtn {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.googleBtn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.divider::before {
+    margin-right: 1rem;
+}
+
+.divider::after {
+    margin-left: 1rem;
+}
+
+.forgotPassword {
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
