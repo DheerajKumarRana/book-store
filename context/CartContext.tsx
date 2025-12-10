@@ -91,7 +91,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 setCart(data.cart || []);
                 return { success: true, message: 'Added to cart' };
             } else {
-                console.error("Cart API Error:", data);
+                console.error(`[Cart Context] API Error: Status ${res.status} (${res.statusText})`);
+                console.error(`[Cart Context] Raw Response:`, text);
+                console.error("Cart API Error Data:", data);
                 return { success: false, message: data.message || 'Failed to add' };
             }
         } catch (error) {

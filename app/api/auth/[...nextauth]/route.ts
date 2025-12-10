@@ -26,28 +26,42 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                await dbConnect();
+                try {
+                    console.log("[NextAuth] Authorize called for:", credentials?.email);
+                    if (!process.env.NEXTAUTH_SECRET) {
+                        console.warn("[NextAuth] WARNING: NEXTAUTH_SECRET is MISSING in env!");
+                    }
 
-                const user = await User.findOne({ email: credentials?.email });
+                    await dbConnect();
 
-                if (!user) {
-                    throw new Error("No user found with this email");
+                    const user = await User.findOne({ email: credentials?.email });
+
+                    if (!user) {
+                        console.log("[NextAuth] User not found");
+                        throw new Error("No user found with this email");
+                    }
+
+                    if (!user.password) {
+                        console.log("[NextAuth] User has no password (social login?)");
+                        throw new Error("Please login with your social account");
+                    }
+
+                    const isValid = await bcrypt.compare(
+                        credentials?.password || "",
+                        user.password
+                    );
+
+                    if (!isValid) {
+                        console.log("[NextAuth] Invalid password");
+                        throw new Error("Invalid password");
+                    }
+
+                    console.log("[NextAuth] Login successful for:", user.email);
+                    return { id: user._id.toString(), name: user.name, email: user.email, role: user.role };
+                } catch (error: any) {
+                    console.error("[NextAuth] Authorize Error:", error);
+                    throw new Error(error.message || "Internal Server Error");
                 }
-
-                if (!user.password) {
-                    throw new Error("Please login with your social account");
-                }
-
-                const isValid = await bcrypt.compare(
-                    credentials?.password || "",
-                    user.password
-                );
-
-                if (!isValid) {
-                    throw new Error("Invalid password");
-                }
-
-                return { id: user._id.toString(), name: user.name, email: user.email, role: user.role };
             },
         }),
     ],
@@ -110,7 +124,8 @@ export const authOptions = {
     session: {
         strategy: "jwt" as const,
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    // Fallback to avoid "ikm" error in dev if env var is missing
+    secret: process.env.NEXTAUTH_SECRET || "temporary_dev_secret_do_not_use_in_prod",
 };
 
 const handler = NextAuth(authOptions);

@@ -6,7 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FiUser, FiMapPin, FiPhone, FiBox } from 'react-icons/fi';
 import styles from './profile.module.css';
 
-export default function ProfilePage() {
+import { Suspense } from 'react';
+
+function ProfileContent() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -211,5 +213,13 @@ export default function ProfilePage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function ProfilePage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProfileContent />
+        </Suspense>
     );
 }

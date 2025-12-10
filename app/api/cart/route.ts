@@ -111,6 +111,12 @@ export async function POST(req: Request) {
 
         // @ts-ignore
         const userId = session.user.id;
+        console.log(`[Cart API] POST request. UserId: ${userId}, Action: ${action}, BookId: ${bookId}`);
+
+        if (!userId) {
+            console.error("[Cart API] Error: User ID is missing in session");
+            return NextResponse.json({ message: "User ID missing" }, { status: 401 });
+        }
 
         logCart(`Action: ${action} | Book: ${bookId}`, { userId });
 
