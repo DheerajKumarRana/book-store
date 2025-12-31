@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './login.module.css';
@@ -28,7 +28,18 @@ export default function LoginPage() {
                 return;
             }
 
-            router.push('/');
+            // Fetch session to check role
+            const session = await getSession();
+            console.log('Login successful. Session:', session);
+            console.log('User Role:', (session?.user as any)?.role);
+
+            if (session?.user && (session.user as any).role === 'admin') {
+                console.log('Redirecting to ADMIN panel');
+                router.push('/admin');
+            } else {
+                console.log('Redirecting to HOME config');
+                router.push('/');
+            }
             router.refresh();
         } catch (error) {
             setError('Something went wrong');

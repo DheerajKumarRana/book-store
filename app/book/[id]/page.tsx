@@ -5,6 +5,7 @@ import dbConnect from '@/lib/db';
 import Book from '@/models/Book';
 import styles from './page.module.css';
 import PurchaseButton from './PurchaseButton';
+import Gallery from '@/components/Gallery';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +21,14 @@ async function getBook(id: string) {
         // Sign the cover image
         const signedCover = await getPresignedUrlFromUrl(book.coverImage);
 
+        // Sign gallery images if they exist
+        let signedImages: string[] = [];
+        if (book.images && book.images.length > 0) {
+            signedImages = await Promise.all(
+                book.images.map((url: string) => getPresignedUrlFromUrl(url))
+            );
+        }
+
         // Sign preview URLs if they exist
         let signedPreviewUrls: string[] = [];
         if (book.previewUrls && book.previewUrls.length > 0) {
@@ -32,6 +41,7 @@ async function getBook(id: string) {
             ...book,
             _id: book._id.toString(),
             coverImage: signedCover,
+            images: signedImages,
             previewUrls: signedPreviewUrls,
         };
     } catch (error) {
@@ -56,9 +66,11 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
             <div className={styles.container}>
                 <div className={styles.grid}>
                     <div className={styles.imageColumn}>
-                        <div className={styles.imageWrapper}>
-                            <img src={book.coverImage} alt={book.title} className={styles.image} />
-                        </div>
+                        <Gallery
+                            mainImage={book.coverImage}
+                            images={book.images}
+                            title={book.title}
+                        />
                     </div>
 
                     <div className={styles.infoColumn}>

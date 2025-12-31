@@ -29,28 +29,20 @@ export async function POST(req: Request) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Generate 6 digit OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
-            verificationToken: otp,
-            verificationTokenExpiry: otpExpiry,
-            isVerified: false
+            verificationToken: undefined,
+            verificationTokenExpiry: undefined,
+            isVerified: true // Auto-verify for now
         });
 
-        // Send Email
-        const emailSent = await sendVerificationEmail(email, otp);
-        if (!emailSent) {
-            console.error("❌ [Register] Failed to send verification email to:", email);
-        } else {
-            console.log("✅ [Register] Verification email sent successfully to:", email);
-        }
+        // Email sending removed as per user request to bypass OTP
+        // const emailSent = await sendVerificationEmail(email, otp);
 
         return NextResponse.json(
-            { message: "User created successfully. Please verify email.", email: user.email },
+            { message: "Account created successfully.", email: user.email },
             { status: 201 }
         );
     } catch (error) {

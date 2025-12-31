@@ -27,6 +27,9 @@ const BookSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a cover image URL'],
     },
+    images: {
+        type: [String], // Array of additional gallery image URLs
+    },
     fileUrl: {
         type: String,
         required: [true, 'Please provide a book file URL'],

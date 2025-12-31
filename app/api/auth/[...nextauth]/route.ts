@@ -41,6 +41,11 @@ export const authOptions = {
                         throw new Error("No user found with this email");
                     }
 
+                    if (user.isBlocked) {
+                        console.log("[NextAuth] User blocked:", user.email);
+                        throw new Error("Your account has been suspended.");
+                    }
+
                     if (!user.password) {
                         console.log("[NextAuth] User has no password (social login?)");
                         throw new Error("Please login with your social account");
@@ -67,11 +72,16 @@ export const authOptions = {
     ],
     callbacks: {
         async signIn({ user, account }: any) {
+            await dbConnect();
+            // Check generic blocked status for any provider
+            const existingUser = await User.findOne({ email: user.email });
+            if (existingUser && existingUser.isBlocked) {
+                console.log("[NextAuth] Blocked user attempted login:", user.email);
+                return false; // Access Denied
+            }
+
             if (account.provider === "google") {
                 try {
-                    await dbConnect();
-                    const existingUser = await User.findOne({ email: user.email });
-
                     if (!existingUser) {
                         const newUser = new User({
                             name: user.name,
@@ -111,7 +121,7 @@ export const authOptions = {
             return token;
         },
         async session({ session, token }: any) {
-            if (session.user) {
+            if (token && session.user) {
                 (session.user as any).role = token.role;
                 (session.user as any).id = token.id;
             }

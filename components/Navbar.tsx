@@ -115,6 +115,11 @@ export default function Navbar() {
 
                         {showDropdown && session && (
                             <div className={styles.dropdown}>
+                                {session.user && (session.user as any).role === 'admin' && (
+                                    <Link href="/admin" className={styles.dropdownItem} style={{ fontWeight: 'bold', color: '#0070f3' }}>
+                                        Admin Dashboard
+                                    </Link>
+                                )}
                                 <Link href="/profile" className={styles.dropdownItem}>Profile</Link>
                                 <Link href="/orders" className={styles.dropdownItem}>Orders</Link>
                                 <button onClick={() => signOut()} className={styles.dropdownItem} suppressHydrationWarning={true}>Logout</button>

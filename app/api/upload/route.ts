@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
         let folder = "others";
         if (type === "cover") folder = "Cover Images";
+        else if (type === "gallery") folder = "Gallery Images";
         else if (type === "preview") folder = "Preview Files";
         else if (type === "full") folder = "Full Books";
         else {
