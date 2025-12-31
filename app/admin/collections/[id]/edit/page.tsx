@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import styles from '../../admin.module.css';
+import styles from '../../../admin.module.css';
 
 export default function EditCollectionPage() {
     const params = useParams();
